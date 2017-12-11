@@ -8,6 +8,7 @@
 #include <dirent.h>
 #include <unistd.h>
 #include "unlink.h"
+#include <errno.h>
 
 #define __GNU_SOURCE
 
@@ -190,7 +191,8 @@ int unlink(const char *pathname) {
     }*/
     if(is_protect_dir(buf))
     {
-        return 0;
+        errno = 1;
+        return -1;
     }
     return orig_unlink(pathname);
 }
@@ -221,7 +223,8 @@ int unlinkat(int dirfd, const char *pathname, int flags) {
     }*/
     if(is_protect_dir(link_path))
     {
-        return 0;
+        errno = 1;
+        return -1;
     }
 
 #if 0
@@ -252,7 +255,8 @@ int unlinkat(int dirfd, const char *pathname, int flags) {
     }*/
     if(is_protect_dir(buf))
     {
-        return 0;
+        errno = 1;
+        return -1;
     }
     return orig_unlink_at(dirfd, pathname, flags);
 }
@@ -280,7 +284,8 @@ int rename(const char *oldpath, const char *newpath) {
     }*/
     if(is_protect_dir(buf))
     {
-        return 0;
+        errno = 1;
+        return -errno;
     }
     memset(buf, 0, PATH_MAX);
     pret = NULL;
@@ -293,7 +298,8 @@ int rename(const char *oldpath, const char *newpath) {
     }*/
     if(is_protect_dir(buf))
     {
-        return 0;
+        errno = 1;
+        return -1;
     }
     return orig_rename(oldpath, newpath);
 }
@@ -322,7 +328,8 @@ int renameat(int olddirfd, const char *oldpath,
     }*/
     if(is_protect_dir(buf))
     {
-        return 0;
+        errno = 1;
+        return -1;
     }
     memset(buf, 0, PATH_MAX);
     pret = NULL;
@@ -335,7 +342,8 @@ int renameat(int olddirfd, const char *oldpath,
     }*/
     if(is_protect_dir(buf))
     {
-        return 0;
+        errno = 1;
+        return -1;
     }
     return orig_rename_at(olddirfd, oldpath, newdirfd, newpath);
 }
@@ -359,6 +367,7 @@ ssize_t write(int fd, const void *buf, size_t count) {
     }*/
     if(is_protect_dir(link_path))
     {
+        errno = 1;
         return -1;
     }
     return orig_write(fd, buf, count);
@@ -386,7 +395,8 @@ int kill(pid_t pid, int sig) {
         if(getpid() == 1) {
             return orig_kill(pid, sig);
         }
-        return 0;
+        errno = 1;
+        return -1;
     }
     return orig_kill(pid, sig);
 }
