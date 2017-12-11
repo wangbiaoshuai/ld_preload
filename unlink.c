@@ -20,6 +20,7 @@ typedef ssize_t(*orig_write_f_type)(int fd, const void *buf, size_t count);
 typedef int (*org_kill_f_type)(pid_t pid, int sig);
 
 static const char* g_fix_path[] = {"/usr/local/service",
+                                   "/usr/local/mysql/data",
                                    "\0"};
 static const char* g_unlimit_proc[] = {"cems",
                                        "mysql",

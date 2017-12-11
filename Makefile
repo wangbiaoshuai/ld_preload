@@ -10,6 +10,7 @@ package:
 	cp ./uninstall.sh ./file_protected
 	cp ./ld.so.preload ./file_protected
 	cp ./libunlink.so.1.0.0 ./file_protected
+	cp ./README.txt ./file_protected
 
 test:
 	gcc -o cems_proc test.c
