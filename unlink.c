@@ -20,10 +20,13 @@ typedef ssize_t(*orig_write_f_type)(int fd, const void *buf, size_t count);
 typedef int (*org_kill_f_type)(pid_t pid, int sig);
 
 static const char* g_fix_path[] = {"/usr/local/service",
-                                   "/usr/local/mysql/data",
+                                   "/usr/local/mysql/data/cems",
+                                   "/usr/local/FastDFS/data",
                                    "\0"};
 static const char* g_unlimit_proc[] = {"cems",
                                        "mysql",
+                                       "mysqld",
+                                       "mysqld_safe",
                                        "fdfs",
                                        "elasticsearch",
                                        "ftp",
@@ -52,7 +55,7 @@ bool is_protect_dir(const char* path)
     const char** protect_path = g_fix_path;
     while(strlen(*protect_path) != 0)
     {
-        if(strncmp(*protect_path, path, sizeof(path)-1) == 0)
+        if(strncmp(*protect_path, path, strlen(*protect_path)) == 0)
         {
             return true;
         }
