@@ -352,6 +352,7 @@ int renameat(int olddirfd, const char *oldpath,
     return orig_rename_at(olddirfd, oldpath, newdirfd, newpath);
 }
 
+#if 0
 ssize_t write(int fd, const void *buf, size_t count) {
     orig_write_f_type orig_write;
     orig_write = (orig_write_f_type)dlsym(RTLD_NEXT,"write");
@@ -404,7 +405,7 @@ int kill(pid_t pid, int sig) {
     }
     return orig_kill(pid, sig);
 }
-
+#endif
 
 int get_fake_flag() {
     return __preload_flag;
